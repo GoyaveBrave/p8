@@ -18,13 +18,19 @@ class UserAddController extends AbstractController
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
-
+            if ($user->getRoles() == true) {
+                $user->setRoles(array('ROLE_ADMIN'));
+            }
+            else {
+                $user->setRoles($role = array('ROLE_USER'));
+            }
             $em->persist($user);
             $em->flush();
 
