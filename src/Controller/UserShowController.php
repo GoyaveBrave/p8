@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserShowController extends AbstractController
 {
     /**
-     * @Route("/users", name="user_list")
+     * @Route("/admin/users", name="user_list")
      */
     public function listAction()
     {

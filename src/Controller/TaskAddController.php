@@ -25,6 +25,9 @@ class TaskAddController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$user) {
+
+            }
             $task->setUserId($user);
 
             $em->persist($task);

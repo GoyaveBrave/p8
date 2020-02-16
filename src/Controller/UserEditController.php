@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserEditController extends AbstractController
 {
     /**
-     * @Route("/users/{id}/edit", name="user_edit")
+     * @Route("/admin/users/{id}/edit", name="user_edit")
      */
     public function editAction(User $user, Request $request, UserPasswordEncoderInterface $encoder)
     {
