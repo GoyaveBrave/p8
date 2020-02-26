@@ -2,22 +2,46 @@
 
 namespace App\Controller;
 use App\Entity\Task;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class TaskDeleteController extends AbstractController
+class TaskDeleteController
 {
+    /** @var EntityManagerInterface */
+    private $em;
+    /** @var UrlGeneratorInterface */
+    private $urlGenerator;
+    /** @var SessionInterface */
+    private $sessionInterface;
+
+    /**
+     * TaskDeleteController constructor.
+     * @param EntityManagerInterface $em
+     * @param UrlGeneratorInterface $urlGenerator
+     * @param SessionInterface $sessionInterface
+     */
+    public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator, SessionInterface $sessionInterface)
+    {
+        $this->em = $em;
+        $this->urlGenerator = $urlGenerator;
+        $this->sessionInterface = $sessionInterface;
+    }
+
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
      */
-    public function deleteTaskAction(Task $task)
+    public function deleteTaskAction($id): RedirectResponse
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($task);
-        $em->flush();
+        $task = $this->em->getRepository(Task::class)->find($id);
+        $this->em->remove($task);
+        $this->em->flush();
 
-        $this->addFlash('success', 'La tâche a bien été supprimée.');
+        $this->sessionInterface->getFlashBag()->add('success', 'La tâche a bien été supprimée.');
 
-        return $this->redirectToRoute('task_list');
+        return new RedirectResponse($this->urlGenerator->generate('task_list'));
     }
 }

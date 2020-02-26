@@ -1,16 +1,28 @@
 <?php
 
 namespace App\Controller;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
-class DefaultController extends AbstractController
+class DefaultController
 {
+    private $twig;
+
+    /**
+     * DefaultController constructor.
+     * @param $twig
+     */
+    public function __construct(Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+
     /**
      * @Route("/", name="homepage")
      */
     public function indexAction()
     {
-        return $this->render('default/index.html.twig');
+        return new Response($this->twig->render('default/index.html.twig'));
     }
 }
