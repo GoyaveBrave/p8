@@ -8,20 +8,20 @@ class UserAddControllerTest extends WebTestCase
     public function testUserAddController()
     {
         $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'admin69',
+            'PHP_AUTH_USER' => 'admin@admin.fr',
             'PHP_AUTH_PW'   => 'admin',
         ]);
 
         $crawler = $client->request('GET', '/users/create');
 
-        $this->assertSame(302, $client->getResponse()->getStatusCode());
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
 
         $this->assertSame(1, $crawler->filter('html:contains("Créer un utilisateur")')->count());
 
         $form = $crawler->selectButton('Ajouter')->form();
 
-        $form['user[username]'] = 'Uusername';
-        $form['user[email]'] = 'Email@gmail.com';
+        $form['user[username]'] = 'Uefffusername';
+        $form['user[email]'] = 'Emaijizihezfhoilerrre@gmail.com';
         $form['user[password]'] = 'password';
         $form['user[roles]'] = 'ROLE_ADMIN';
 
@@ -29,6 +29,7 @@ class UserAddControllerTest extends WebTestCase
 
         $crawler = $client->followRedirect();
 
-        $this->assertSame(1, $crawler->filter('html:contains("L\'utilisateur ajouté avec succès !")')->count());
+
+        $this->assertSame(1, $crawler->filter('html:contains("L\'utilisateur a bien été ajouté.")')->count());
     }
 }

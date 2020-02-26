@@ -1,13 +1,7 @@
 <?php
 
 namespace App\Tests\Controller;
-use App\Controller\UserEditController;
-use App\Entity\Task;
-use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserEditControllerTest extends WebTestCase
 {
