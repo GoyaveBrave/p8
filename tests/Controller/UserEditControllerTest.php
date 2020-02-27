@@ -8,20 +8,20 @@ class UserEditControllerTest extends WebTestCase
        public function testEditAction()
     {
         $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'admin69',
+            'PHP_AUTH_USER' => 'admin@admin.fr',
             'PHP_AUTH_PW'   => 'admin',
         ]);
-        $crawler = $client->request('GET', '/admin/users/45/edit');
-        $this->assertSame(302, $client->getResponse()->getStatusCode());
+        $crawler = $client->request('GET', '/admin/users/59/edit');
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
 
         $this->assertSame(1, $crawler->filter('html:contains("Modifier")')->count());
 
         $form = $crawler->selectButton('Modifier')->form();
 
-        $form['user[username]'] = 'test usn3';
-        $form['user[email]'] = 'admin@gmail.com';
+        $form['user[username]'] = 'testouchee';
+        $form['user[email]'] = 'adminouche@gmail.com';
         $form['user[password]'] = 'password';
-        $form['user[roles][0]'] = 'ROLE_ADMIN';
+        $form['user[roles]'] = 'ROLE_ADMIN';
 
         $client->submit($form);
 

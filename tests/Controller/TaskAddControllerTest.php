@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 use Twig\Environment;
 
-class TaskAddControllerTest extends KernelTestCase
+class TaskAddControllerTest extends WebTestCase
 {
     /**
      * @var EntityManagerInterface
@@ -56,13 +56,27 @@ class TaskAddControllerTest extends KernelTestCase
 
     public function testCreateAction()
     {
-
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'admin@admin.fr',
+            'PHP_AUTH_PW'   => 'admin',
+        ]);
+        $crawler = $client->request('GET', '/tasks/create');
         $controller = new TaskAddController($this->em, $this->twig, $this->formFactory, $this->security, $this->urlGenerator, $this->sessionInterface);
         $request = Request::create('/tasks/create', 'GET');
+
         $this->assertInstanceOf(Response::class, $controller->createAction($request));
-        //Good response instanceof RedirectResponse
+        $this->assertSame(1, $crawler->filter('html:contains("save")')->count());
 
-        //Bad task instanceof Response
+        $form = $crawler->selectButton('save')->form();
 
+        $form['task[title]'] = 'test taskk title';
+        $form['task[content]'] = 'test task content';
+
+        $client->submit($form);
+
+        $crawler = $client->followRedirect();
+
+        //echo $crawler->filter('html:contains("La tâche a été bien été créée !")')->count();
+        $this->assertSame(1, $crawler->filter('html:contains("La tâche a été bien été ajoutée.")')->count());
     }
 }

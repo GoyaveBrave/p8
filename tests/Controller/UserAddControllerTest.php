@@ -20,8 +20,8 @@ class UserAddControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Ajouter')->form();
 
-        $form['user[username]'] = 'Uefffusername';
-        $form['user[email]'] = 'Emaijizihezfhoilerrre@gmail.com';
+        $form['user[username]'] = 'Testismmm';
+        $form['user[email]'] = 'TestIsmmm@gmail.com';
         $form['user[password]'] = 'password';
         $form['user[roles]'] = 'ROLE_ADMIN';
 

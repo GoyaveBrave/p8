@@ -9,8 +9,11 @@ class TaskToggleControllerTest extends WebTestCase
     /** @test */
     public function testToggleTaskAction()
     {
-        $client = static::createClient();
-        $id = 69;
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'admin@admin.fr',
+            'PHP_AUTH_PW'   => 'admin',
+        ]);
+        $id = 77;
         // Get the entityManager
         $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
         // Get a task

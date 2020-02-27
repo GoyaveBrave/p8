@@ -10,25 +10,28 @@ class UserShowControllerTest extends WebTestCase
     /** @test */
     public function listActionTest()
     {
-        $client = static::createClient();
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'admin@admin.fr',
+            'PHP_AUTH_PW'   => 'admin',
+        ]);
         $container = $client->getContainer();
         $em = $container->get('doctrine')->getManager();
 
         $user1 = new User();
-        $user1->setEmail('Test Title365');
-        $user1->setUsername('Test usn1');
+        $user1->setEmail('Testt@Title348655.fr');
+        $user1->setUsername('Test ustu111');
         $user1->setPassword('Test psw');
         $user1->setRoles(array('ROLE_ADMIN'));
 
         $user2 = new User();
-        $user2->setEmail('Test Title23');
-        $user2->setUsername('test usn2');
+        $user2->setEmail('Testt@Title2455.fr');
+        $user2->setUsername('test ustu222');
         $user2->setPassword('test psw');
         $user2->setRoles(array('ROLE_ADMIN'));
 
         $user3 = new User();
-        $user3->setEmail('Test Title33');
-        $user3->setUsername('test usn3');
+        $user3->setEmail('Testt@Title3243.fr');
+        $user3->setUsername('test ustu333');
         $user3->setPassword('test psw');
         $user3->setRoles(array('ROLE_ADMIN'));
 

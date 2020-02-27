@@ -10,8 +10,11 @@ class TaskEditControllerTest extends WebTestCase
     /** @test */
     public function testEditAction()
     {
-        $client = static::createClient();
-        $id = 68;
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'admin@admin.fr',
+            'PHP_AUTH_PW'   => 'admin',
+        ]);
+        $id = 114;
         // Get the entityManager
         $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
         // Get a task

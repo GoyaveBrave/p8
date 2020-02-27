@@ -24,7 +24,10 @@ class TaskShowControllerTest extends WebTestCase
 
     public function testListAction()
     {
-        $client = static::createClient();
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'admin@admin.fr',
+            'PHP_AUTH_PW'   => 'admin',
+        ]);
         $container = $client->getContainer();
         $controller = new TaskShowController($this->twig, $this->em);
 

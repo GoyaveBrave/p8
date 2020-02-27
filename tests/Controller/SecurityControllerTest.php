@@ -24,10 +24,10 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $client->followRedirect();
         static::assertSame(200, $client->getResponse()->getStatusCode());
 
-        // Test if home page text when authenticated exists
-        static::assertSame("Bienvenue sur Todo List !", $crawler->filter('input[name="home"]')->text());
 
-        // Return the client to reuse the authenticated user it in others functionnal tests
+        static::assertSame(1, $crawler->filter('html:contains("Bienvenue sur Todo List !")')->count());
+
+
         return $client;
     }
 }
