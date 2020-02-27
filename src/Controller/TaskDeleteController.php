@@ -4,12 +4,13 @@ namespace App\Controller;
 use App\Entity\Task;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class TaskDeleteController
+class TaskDeleteController extends AbstractController
 {
     /** @var EntityManagerInterface */
     private $em;
@@ -36,9 +37,17 @@ class TaskDeleteController
      */
     public function deleteTaskAction($id): RedirectResponse
     {
+        $user = $this->getUser();
         $task = $this->em->getRepository(Task::class)->find($id);
-        $this->em->remove($task);
-        $this->em->flush();
+
+
+        if ($user === $task->getUserId() OR $task->getUserId() == null AND $user->getRoles()[0] == "ROLE_ADMIN") {
+            $this->em->remove($task);
+            $this->em->flush();
+        }
+        else {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à supprimer cette tâche');
+        }
 
         $this->sessionInterface->getFlashBag()->add('success', 'La tâche a bien été supprimée.');
 
